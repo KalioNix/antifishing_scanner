@@ -1,0 +1,1110 @@
+<%@ page import="javax.servlet.http.HttpSession" %>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<%@page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
+
+<%
+	HttpSession afs_session = request.getSession();
+	String userEmail = (String) afs_session.getAttribute("userEmail");
+%>
+
+<title>RESULT</title>
+
+
+  <!--파비콘-->
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link
+	href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+	rel="stylesheet">
+
+<!-- Font Awesome -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+	rel="stylesheet">
+
+<!-- Libraries Stylesheet -->
+<link href="lib/owlcarousel/assets/owl.carousel.min.css"
+	rel="stylesheet">
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="css/style.css" rel="stylesheet">
+
+<!-- Custom styles for this page -->
+<link href="vendor/datatables/dataTables.bootstrap4.min.css"
+	rel="stylesheet">
+<!--include 코드-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+<script>
+	$(function() {
+		$("#navInclude").load("navbar.html");
+		$("#footerInclude").load("footer.html");
+	});
+
+const urlParams = new URL(location.href).searchParams;
+const t_result = urlParams.get('result');
+
+var result = t_result.replace(/'/g, "\"");
+result = JSON.parse(result);
+
+$(document).ready(function () {
+    document.querySelectorAll('.info1 td')[0].innerText = result['info']['url']
+    document.querySelectorAll('.info1 td')[1].innerText = result['info']['type'];
+    document.querySelectorAll('.info1 td')[2].innerText = result['info']['start_time'];
+    document.querySelectorAll('.info1 td')[3].innerText = result['info']['end_time'];
+    document.querySelectorAll('.info1 td')[4].innerText = result['info']['taken_time']+"초";
+    document.querySelectorAll('.info1 td')[5].innerText = result['info']['ip'];
+
+
+    var total_critical=0;
+    var total_high=0;
+    var total_medium=0;
+    var critical=0;
+    var high=0;
+    var medium=0;
+
+    var sum=0;
+
+    var obj = document.querySelectorAll('.report tr')
+    
+
+    for(var i=0; i<obj.length-1; i++){
+    	if(result[i]!=null){
+        	obj[i+1].querySelectorAll('td')[1].innerText = result[i]['success'];
+        	obj[i+1].querySelectorAll('td')[3].innerText = result[i]['payload'].replace(/\\/g, "\\\\");
+
+            if(result[i]['success']=="O"){
+                if(obj[i+1].querySelectorAll('td')[2].innerText=="Critical"){
+                    critical +=1;
+                    sum +=1;
+                }
+                else if(obj[i+1].querySelectorAll('td')[2].innerText=="High"){
+                    high +=1;
+                    sum +=1;
+                }
+                else if(obj[i+1].querySelectorAll('td')[2].innerText=="Medium"){
+                    medium +=1;
+                    sum +=1;
+                }
+            }
+        }
+    }
+
+
+    document.querySelector('.sum1').innerText = sum.toString() + "/" + (obj.length-1).toString();
+
+
+    for(var i=0; i<obj.length-1; i++){
+        if(obj[i+1].querySelectorAll('td')[2].innerText=="Critical"){
+            total_critical +=1;
+        }
+        else if(obj[i+1].querySelectorAll('td')[2].innerText=="High"){
+            total_high +=1;
+        }
+        else if(obj[i+1].querySelectorAll('td')[2].innerText=="Medium"){
+            total_medium +=1;
+        }
+
+    }
+
+    document.querySelector('.critical_val').innerText=Math.round(critical/total_critical*100);
+    document.querySelector('.high_val').innerText=Math.round(high/total_high*100);
+    document.querySelector('.medium_val').innerText=Math.round(medium/total_medium*100);
+
+    document.querySelector('.critical_bar').style.width = Math.round(critical/total_critical*100).toString() + "%";
+    document.querySelector('.high_bar').style.width = Math.round(high/total_high*100).toString() + "%";
+    document.querySelector('.medium_bar').style.width = Math.round(medium/total_medium*100).toString() + "%";
+    
+    var c_weight = 5;
+    var h_weight = 3;
+    var m_weight = 1;
+
+    var cnt = Math.round(100/(c_weight*total_critical + h_weight*total_high + m_weight*medium));
+
+    var tot_score = 0;
+    tot_score = 100 - (c_weight*critical + h_weight*high + m_weight*medium)*cnt;
+
+    document.querySelector('.tot_score').innerText = tot_score.toString() + "점";
+
+});
+
+function saveData() {
+    // AJAX 요청을 사용하여 서버에 데이터 전송
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "saveData.jsp", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    // result 파라미터와 userEmail을 전송
+	var resultValue = btoa(t_result);
+    var userEmail = "<%= userEmail %>"; // JSP 변수 사용
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                var response = xhr.responseText.trim();
+                if (response == "success") {
+                    // 저장 성공 시 알림창 표시
+                    alert("데이터가 성공적으로 저장되었습니다.");
+                } else {
+                    // 저장 실패 시 알림창 표시
+                    alert("데이터 저장에 실패했습니다.");
+                }
+            } else {
+                alert("요청 중 오류가 발생했습니다.");
+            }
+        }
+    };
+
+    xhr.send("result=" + encodeURIComponent(resultValue) + "&userEmail=" + encodeURIComponent(userEmail));
+}
+
+
+</script>
+
+<style>
+#download-btn {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 0.5rem 1rem;
+	background-color: #007bff;
+	color: #fff;
+	border: none;
+	border-radius: 0.25rem;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+	cursor: pointer;
+}
+#save-btn {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 0.5rem 1rem;
+	background-color: #007bff;
+	color: #fff;
+	border: none;
+	border-radius: 0.25rem;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+	cursor: pointer;
+}
+</style>
+</head>
+
+<body id="page-top">
+	<!--navbar include-->
+	<!--  <div id="navInclude"></div>  -->
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+
+				<!-- 네비게이션 -->
+				<a href="index.html" class="navbar-brand ml-lg-3"> <img
+					src="img/logo.png" width="100px" height="40px">
+				</a>
+				<div class="container-fluid p-0">
+					<h1 class="mx-auto" style="padding: 20px; text-align: center;">RESULT</h1>
+				</div>
+
+				<!-- <a href="index.html"
+					class="navbar-brand ml-lg-3 justify-content-center">
+					<h1 class="m-0 display-5 text-uppercase text-primary">
+						<i class="fa fa-truck mr-2"></i>AFS
+					</h1>
+				</a> -->
+
+
+
+				<!-- 네비게이션 종료 -->
+				<hr>
+
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+					<!-- 윗단 -->
+					<div class="d-sm-flex align-items-center justify-content-between"
+						style="margin-bottom: 3rem; position: relative;">
+						<%
+							if (userEmail != null) {
+						%>
+							<a id="save-btn"` class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-right: 160px;" onclick="saveData()">
+								<i class="fas fa-upload fa-sm text-white-50"> Save</i>
+							</a>
+						<%
+							}
+						%>
+
+
+						<a id="download-btn"
+							class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+							<i class="fas fa-download fa-sm text-white-50"> Generate Report </i>
+						</a>
+					</div>
+					<!-- 윗단 종료 -->
+					<!-- 첫번째 줄  -->
+					<div class="row">
+						<!-- 첫번째 줄 첫번째 박스, information -->
+						<div class="col-xl-4 col-lg-5">
+							<div class="card shadow mb-4" style="overflow-x:hidden; overflow-y:hidden;";>
+								<!-- 카드헤더 - Dropdown -->
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">스캔 정보</h6>
+									<!-- <div class="dropdown no-arrow">
+										<a class="dropdown-toggle" href="#" role="button"
+											id="dropdownMenuLink" data-toggle="dropdown"
+											aria-haspopup="true" aria-expanded="false"> <i
+											class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+										</a>
+										<div
+											class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+											<div class="dropdown-header">Dropdown Header:</div>
+											<a class="dropdown-item" href="#">Action</a> <a
+												class="dropdown-item" href="#">Another action</a>
+											<div class="dropdown-divider"></div>
+											<a class="dropdown-item" href="#">Something else here</a>
+										</div>
+									</div> -->
+								</div>
+								<!-- 카드바디 -->
+								<div class="card-body">
+									<div class="chart-area">
+										<div class="table-responsive" >
+											<!-- csy table 수정해야함 -->
+											<table class="table info1"
+												style="border: 3px solid #ffffff; background-color: #f8f9fc;">
+												<tbody>
+													<tr>
+														<th scope="row">URL</th>
+														<td>https://www.abcdef.com</td>
+													</tr>
+													<tr>
+														<th scope="row">스캔 종류</th>
+														<td>Quick Scan</td>
+													</tr>
+													<tr>
+														<th scope="row">시작 시간</th>
+														<td>yyyy-mm-dd hh-mm-ss</td>
+													</tr>
+													<tr>
+														<th scope="row">종료 시간</th>
+														<td>yyyy-mm-dd hh-mm-ss</td>
+													</tr>
+													<tr>
+														<th scope="row">소요 시간</th>
+														<td>100(minute)</td>
+													</tr>
+													<tr>
+														<th scope="row">IP</th>
+														<td>----</td>
+													</tr>
+												</tbody>
+											</table>
+
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- 첫번째 줄 2번째 박스, 원그래프 -->
+						<!-- 파라미터 값 : score -->
+						<div class="col-xl-4 col-lg-5">
+							<div class="card shadow mb-4" style="color: black;">
+								<!-- 카드헤더 -->
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">발견 개수</h6>
+								</div>
+								<!-- 카드바디 -->
+								<div class="card-body" style="padding-top:0px;">
+									<div class="pie-chart pie-chart1 pt-4 pb-2"
+										style="margin-top: 20px; background: #e9ecef;">
+										<span class="center">0%</span>
+									</div>
+
+									<div class="mt-2 text-center small sum1">
+										<span class="mr-2" style="color: black;"> <i
+											class="fas fa-circle text-primary "></i> n/14
+										</span>
+									</div>
+									<div class="mt-3 text-center small">
+										<span class="mr-2" style="color: black;"> <i
+											class="fas fa-circle text-primary" style="color:#3D81F5 !important;"></i> 안전
+										</span>
+										<span class="mr-2" style="color: black;"> <i
+											class="fas fa-circle text-primary" style="color:#12BA69 !important;"></i> 보통
+										</span>
+										<span class="mr-2" style="color: black;"> <i
+											class="fas fa-circle text-primary" style="color:#FCC436 !important;"></i> 주의
+										</span>
+										<span class="mr-2" style="color: black;"> <i
+											class="fas fa-circle text-primary" style="color:#DD493C !important;"></i> 위험
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 첫번째 줄 3번째 박스, 그래프 -->
+						<div class="col-xl-4 col-lg-5">
+							<!-- 카드 -->
+							<div class="card shadow mb-4">
+								<!-- 카드 헤더 -->
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">치명도</h6>
+								</div>
+								<!-- 카드 바디 -->
+								<div class="card-body" style="padding-bottom: 17px;">
+									<!-- Critical -->
+									<h4 class="small font-weight-bold">
+										Critical <span class="float-right critical_val">20%</span>
+									</h4>
+									<div class="progress mb-4">
+										<div class="progress-bar bg-danger critical_bar" role="progressbar"
+											style="width: 20%" aria-valuenow="20" aria-valuemin="0"
+											aria-valuemax="100"></div>
+									</div>
+									<!-- High -->
+									<h4 class="small font-weight-bold">
+										High <span class="float-right high_val">40%</span>
+									</h4>
+									<div class="progress mb-4">
+										<div class="progress-bar bg-warning high_bar" role="progressbar"
+											style="width: 40%" aria-valuenow="40" aria-valuemin="0"
+											aria-valuemax="100"></div>
+									</div>
+									<!-- Medium -->
+									<h4 class="small font-weight-bold">
+										Medium <span class="float-right medium_val">60%</span>
+									</h4>
+									<div class="progress mb-4">
+										<div class="progress-bar medium_bar" role="progressbar"
+											style="width: 40%" aria-valuenow="60" aria-valuemin="0"
+											aria-valuemax="100"></div>
+									</div>
+
+
+
+									<div class="col-xl-12 col-md-6 mb-2">
+										<div class="card border-left-primary shadow h-100 py-2">
+											<div class="card-body">
+												<div class="row no-gutters align-items-center">
+													<div class="col mr-2">
+														<div
+															class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+															SCORE</div>
+														<div class="h5 mb-0 font-weight-bold text-gray-800 tot_score">TEST</div>
+													</div>
+													<div class="col-auto"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 세번째 줄 -->
+					<div class="row">
+						<!-- Content Column -->
+						<div class="col-lg-12 mb-1">
+
+							<!-- 프로젝트 카드 -->
+							<div class="card shadow mb-4">
+								<!-- 카드헤더 -->
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">결과</h6>
+								</div>
+								<!-- 카드바디 -->
+								<div class="card-body">
+									<!-- css table 수정해야함 -->
+									<table class="table report"
+										style="border: 3px solid #ffffff; background-color: #f8f9fc;">
+										<thead>
+											<tr style="background-color: #f7f7f7;">
+												<th>취약점</th>
+												<th width="1%">성공 여부</th>
+												<th>위험도</th>
+												<!-- <th>owasp</th> -->
+												<th>공격코드</th>
+												<th>정보</th>
+											</tr>
+										</thead>
+										<tbody>
+											<!-- 1번째 컬럼 -->
+											<tr>
+												<td><strong>XSS<br>(크로스 사이트 스크립팅)
+												</strong></td>
+												<td>X</td>
+												<td class="high">High</td>
+												<td class="payload"></td>
+												<!-- <td>2021 A3. Injection<br>(인젝션)
+												</td> -->
+												<td><div class="card shadow mb-12">
+														<!-- 카드 헤더 -->
+														<a href="#collapseCardExample1"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample1">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-79</h6>
+														</a>
+														<!-- 카드 컨텐츠 내용 -->
+														<div class="collapse text-left" id="collapseCardExample1"
+															style="">
+															<div class="card-body">
+																<h6>	
+																	2021 A3. Injection<br>
+																	<strong>원인</strong> : 웹 어플리케이션에서 입력값을 검증하지 않거나 잘못 처리하는
+																	경우에 발생함.<br> <strong>예상 피해</strong> : 악성 스크립트를 희생자
+																	웹에서 실행시켜 쿠키나 세션을 탈취하여 브라우저를 제어함.<br> <strong>대응
+																		방법</strong> : 입력값 검증과 이스케이프 처리를 한다. 사용자 입력값에 대한 검증은 서버단에서 수행한다.
+																</h6>
+															</div>
+														</div>
+													</div></td>
+											</tr>
+											<!-- 2번째 컬럼 -->
+											<tr>
+												<td><strong>SQL Injection<br>(SQL 인젝션)
+												</strong></td>
+												<td>X</td>
+												<td class="critical">Critical</td>
+												<td class="payload"></td>
+												<!-- <td>2021 A3. Injection<br>(인젝션)
+												</td> -->
+												<td><div class="card shadow mb-12">
+														<!-- 카드 헤더 -->
+														<a href="#collapseCardExample2"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample2">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-89</h6>
+														</a>
+														<!-- 카드 컨텐츠 내용 -->
+														<div class="collapse text-left" id="collapseCardExample2"
+															style="">
+															<div class="card-body">
+																<h6>
+																	2021 A3. Injection<br>
+																	<strong>원인</strong> : 웹 어플리케이션에서 SQL 쿼리를 구성할 때 입력값 검증하지
+																	않거나 잘못된 처리를 하여 발생함.<br> <strong>예상 피해</strong> :
+																	악성 SQL 쿼리를 삽입하여 데이터베이스에 대한 제어권 혹은 데이터를 조작함.<br> <strong>대응
+																		방법</strong> : 입력값 검증과 이스케이프 처리를 한다. Prepared Statements 방식 사용
+																</h6>
+															</div>
+														</div>
+													</div></td>
+											</tr>
+											<!-- 3번째 컬럼 -->
+											<tr>
+												<td><strong>Administrator Page Exposure<br>(관리자 페이지 노출)
+												</strong></td>
+												<td>X</td>
+												<td class="medium">Medium</td>
+												<td class="payload"></td>
+												<!-- <td>2021 A7. Identification and Authentication Failures<br>(식별
+													및 인증 실패)
+												</td> -->
+												<td><div class="card shadow mb-12">
+														<!-- 카드 헤더 -->
+														<a href="#collapseCardExample3"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample3">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-200, CWE-548</h6>
+														</a>
+														<!-- 카드 컨텐츠 내용 -->
+														<div class="collapse text-left" id="collapseCardExample3"
+															style="">
+															<div class="card-body">
+																<h6>
+																	2021 A1. Broken Access Control<br>
+																	<strong>원인</strong> : 공격자가 쉽게 추측이 가능한 경로를 사용하거나 인증 메커니즘이 없어서 관리자 페이지에 쉽게 접근할 수 있음<br> 
+																	<strong>예상 피해</strong> : 관리자 페이지가 노출되면 공격자가 시스템 관리 기능에 접근하여 시스템을 조작하거나 민감한 정보에 접근 가능<br> 
+																	<strong>대응 방법</strong> : 적절한 인증 및 권한 부여 메커니즘을 구현하여 관리자 페이지에 접근할 수 있는 사용자를 제한해야 함.
+																</h6>
+															</div>
+														</div>
+													</div></td>
+											</tr>
+											<!-- 4번째 컬럼  directory_traversal.py-->
+											<tr>
+												<td><strong>Directory Traversal<br>(디렉터리 순회)
+												</strong></td>
+												<td>X</td>
+												<td class="medium">Medium</td>
+												<td class="payload"></td>
+												<td><div class="card shadow mb-12">
+														<!-- 카드 헤더 -->
+														<a href="#collapseCardExample4"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample4">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-22</h6>
+														</a>
+														<!-- 카드 컨텐츠 내용 -->
+														<div class="collapse text-left" id="collapseCardExample4"
+															style="">
+															<div class="card-body">
+																<h6>
+																	2021 A5. Security Misconfiguration<br>
+																	<strong>원인</strong> : 웹 응용프로그램에서 파일 또는 디렉터리 경로를 올바르게 검증하지 않을 때 발생 함.<br> 
+																	<strong>예상 피해</strong> : 공격자가 웹서버의 파일 시스템에서 민감한 파일에 접근하여 데이터가 노출되거나, 시스템에 침투하여 데이터를 변조시킴.<br> 
+																	<strong>대응방법</strong> : 입력을 검증하고, 사용자에게 필요한 파일에만 접근 권한을 부여한다. 또한 최신 보안 패치를 지속적으로 해야 함.																</h6>
+															</div>
+														</div>
+													</div></td>
+											</tr>
+											<!-- 5번째 컬럼 -->
+											<!-- <tr>
+												<td><strong>Broken Authentication and Session
+														Management<br>(취약한 인증 및 세션 관리)
+												</strong></td>
+												<td>O</td>
+												<td class="high">High</td>
+												<td>2021 A7. Identification and Authentication
+													Failures<br>(식별 및 인증 실패)
+												</td>
+												<td><div class="card shadow mb-12">
+														카드 헤더
+														<a href="#collapseCardExample5"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample5">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-287, CWE-613</h6>
+														</a>
+														카드 컨텐츠 내용
+														<div class="collapse text-left" id="collapseCardExample5" style="">
+															<div class="card-body">
+															<h6>
+																<strong>원인</strong> : 웹 애플리케이션에서 인증 과정을 제대로 구현하지 않아 인증을 우회함.<br>
+																<strong>예상 피해</strong> : 사용자의 권한을 탈취하고, 시스템에 접근하여 원치 않은 동작을 수행함.<br>
+																<strong>대응 방법</strong> : 인증 정책을 강화하고, 사용자의 세션 관리를 보안적으로 처리함.
+															</h6>
+															</div>
+														</div>
+													</div></td>
+											</tr> -->
+
+											<!-- <tr>
+												<td scope="row">Local File Inclusion(LFI) Remote File
+													Inclusion(RFI)</td>
+												<td>O</td>
+												<td>High</td>
+												<td><div class="card shadow mb-12">
+														카드 헤더
+														<a href="#collapseCardExample6"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample6">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-98</h6>
+														</a>
+														카드 컨텐츠 내용
+														<div class="collapse" id="collapseCardExample6" style="">
+															<div class="card-body">
+																<strong>2017 OWASP A7. XSS</strong>
+															</div>
+														</div>
+													</div></td>
+											</tr> -->
+
+											<!-- 5번째 컬럼 -->
+											<tr>
+												<td><strong>Unnecessary HTTP Methods<br>(불필요한 HTTP 메소드 취약점)
+												<td>X</td>
+												<td class="medium">Medium</td>
+												<td class="payload"></td>
+												<!-- <td>2021 A5. Security Misconfiguration<br>(보안 설정
+													오류)
+												</td> -->
+												<td><div class="card shadow mb-12">
+														<!-- 카드 헤더 -->
+														<a href="#collapseCardExample17"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample17">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-NONE</h6>
+														</a>
+														<!-- 카드 컨텐츠 내용 -->
+														<div class="collapse text-left" id="collapseCardExample17" style="">
+															<div class="card-body">
+																<h6>
+																	2021 A5. Security Misconfiguration<br>
+																	<strong>원인</strong> : 일반적으로 사용하는 GET, POST 메소드 이외의 불필요한 메소드가 활성화 되어 있을 때 발생함.<br> 
+																	<strong>예상 피해</strong> : 공격자가 악성 파일을 업로드하거나, 중요 파일의 삭제가 가능해지는 등 웹 사이트를 변조할 가능성이 생<br> 
+																	<strong>대응 방법</strong> : 필요한 HTTP 메소드만 허용하고, 적절한 인증 및 권한 부여 메커니즘을 통해 권한 없는 접근을 방지함
+																</h6>
+															</div>
+														</div>
+													</div></td>
+											</tr>
+											<!-- 6번째 컬럼 -->
+											<tr>
+												<td><strong>File Inclusion<br>(파일 삽입)
+												</strong></td>
+												<td>X</td>
+												<td class="high">High</td>
+												<td class="payload"></td>
+												<!-- <td>2021 A3. injection<br>(인젝션)
+												</td> -->
+												<td><div class="card shadow mb-12">
+														<!-- 카드 헤더 -->
+														<a href="#collapseCardExample9"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample9">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-98</h6>
+														</a>
+														<!-- 카드 컨텐츠 내용 -->
+														<div class="collapse text-left" id="collapseCardExample9"
+															style="">
+															<div class="card-body">
+																<h6>
+																	2021 A3. Injection<br>
+																	<strong>원인</strong> : PHP 프로그램에서 사용자로부터 입력된 파일명이 직접적으로
+																	사용되어 발생한다.<br> <strong>예상 피해</strong> : 악성 스크립트를
+																	실행시키거나, 시스템에 대한 제어권을 탈취함.<br> <strong>대응
+																		방법</strong> : PHP 버전에 따른 보안 설정 확인, include, require 함수 확인
+																</h6>
+															</div>
+														</div>
+													</div></td>
+											</tr>
+											<!-- 7번째 컬럼 -->
+											<tr>
+												<td><strong>Insecure Communications<br>(안전하지
+														않은 통신)
+												</strong></td>
+												<td>X</td>
+												<td class="high">High</td>
+												<td class="payload"></td>
+												<!-- <td>2021 A9. Security Logging and Monitoring Failures<br>(보안
+													로깅 및 모니터링 오류)
+												</td> -->
+												<td><div class="card shadow mb-12">
+														<!-- 카드 헤더 -->
+														<a href="#collapseCardExample10"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample10">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-319</h6>
+														</a>
+														<!-- 카드 컨텐츠 내용 -->
+														<div class="collapse text-left" id="collapseCardExample10"
+															style="">
+															<div class="card-body">
+																<h6>
+																	2021 A9. Security Logging and Monitoring Failures<br>
+																	<strong>원인</strong> : 인증서 검증을 하지 않고 SSL/TLS 연결을 사용, 평문
+																	데이터를 HTTP 통신을 통해 전달함.<br> <strong>예상 피해</strong> :
+																	중요 정보를 가로채거나 조작함. 시스템 접근, 고객정보 탈취등을 함.<br> <strong>대응
+																		방법</strong> : HTTPS 프로토콜 사용, SSL/TLS 연결의 안정성 검증
+																</h6>
+															</div>
+														</div>
+													</div></td>
+											</tr>
+											<!-- 8번째 컬럼 -->
+											<tr>
+												<td><strong>Directory Listing<br>(디렉터리 리스팅)
+												</strong></td>
+												<td>X</td>
+												<td class="high">High</td>
+												<td class="payload"></td>
+												<!-- <td>2021 A1. Broken Access Control<br>(취약한 접근제어)
+												</td> -->
+												<td><div class="card shadow mb-12">
+														<!-- 카드 헤더 -->
+														<a href="#collapseCardExample11"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample11">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-548</h6>
+														</a>
+														<!-- 카드 컨텐츠 내용 -->
+														<div class="collapse text-left" id="collapseCardExample11"
+															style="">
+															<div class="card-body">
+																<h6>
+																	2021 A5. Security Misconfiguration<br>
+																	<strong>원인</strong> : 취약한 웹 서버 설정으로 인덱싱(리스팅)기능이 활성화 되어 있음.<br> 
+																	<strong>예상 피해</strong> : 공격자가 디렉터리 구조와 포함된 파일들에 대한 정보를 획득하고 악용할 수 있음.<br> <strong>대응
+																		방법</strong> : 웹 서버의 디렉터리 리스팅 기능을 비활성화하고, 디렉터리 내에 인덱스 파일(index.html 등)을 생성하여 디렉터리의 콘텐츠를 숨김 처리 한다.																</h6>
+															</div>
+														</div>
+													</div></td>
+											</tr>
+											<!-- 9번째 컬럼 -->
+											<tr>
+												<td><strong>Buffer Overflow<br>(버퍼 오버플로우)
+												</strong></td>
+												<td>X</td>
+												<td class="high">High</td>
+												<td class="payload"></td>
+												<!-- <td>2021 A7. Identification and Authentication Failures<br>(식별
+													및 인증 실패)
+												</td> -->
+												<td><div class="card shadow mb-12">
+														<!-- 카드 헤더 -->
+														<a href="#collapseCardExample12"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample12">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-120</h6>
+														</a>
+														<!-- 카드 컨텐츠 내용 -->
+														<div class="collapse text-left" id="collapseCardExample12"
+															style="">
+															<div class="card-body">
+																<h6>
+																	2021 A3. injection<br>
+																	<strong>원인</strong> : 입력되는 파라미터 값의 문자열 길이를 제한하지 않아 할당된 저장 공간보다 더 큰 값의 입력으로 오류가 발생함.<br>
+																	<strong>예상 피해</strong> : 의도되지 않은 정보 노출, 프로그램에 대한 비인가 접근 및 사용 발생<br>
+																	<strong>대응 방법</strong> : 입력 값 범위를 제한하고, 에러 페이지가 반환 되지 않도록 조치함.
+																</h6>
+															</div>
+														</div>
+													</div></td>
+											</tr>
+											<!-- 10번째 컬럼 -->
+											<tr>
+												<td><strong>Command Injection<br>(명령어 삽입)
+												</strong></td>
+												<td>X</td>
+												<td class="high">High</td>
+												<td class="payload"></td>
+												<!-- <td>2021 A3. injection<br>(인젝션)
+												</td> -->
+												<td><div class="card shadow mb-12">
+														<!-- 카드 헤더 -->
+														<a href="#collapseCardExample13"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample13">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-78,
+																CWE-88</h6>
+														</a>
+														<!-- 카드 컨텐츠 내용 -->
+														<div class="collapse text-left" id="collapseCardExample13"
+															style="">
+															<div class="card-body">
+																<h6>
+																	2021 A3. Injection<br>
+																	<strong>원인</strong> : 입력값 검증을 하지 않고, 허용되지 않은 파일 업로드에 의해
+																	발생함.<br> <strong>예상 피해</strong> : 시스템 명령어를 통해 시스템을
+																	제어하거나, 중요 데이터를 탈취함.<br> <strong>대응 방법</strong> :
+																	입력값 검증과 인증 절차를 강화시킴. 주기적인 보안 업데이트
+																</h6>
+															</div>
+														</div>
+													</div></td>
+											</tr>
+											<!-- 11번째 컬럼 -->
+											<tr>
+												<td><strong>LDAP Injection<br>(LDAP 인젝션)</strong></td>
+												<td>X</td>
+												<td class="high">High</td>
+												<td class="payload"></td>
+
+												<td><div class="card shadow mb-12">
+														<!-- 카드 헤더 -->
+														<a href="#collapseCardExample14"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample14">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-90</h6>
+														</a>
+														<!-- 카드 컨텐츠 내용 -->
+														<div class="collapse text-left" id="collapseCardExample14"
+															style="">
+															<div class="card-body">
+																<h6>
+																	2021 A3. Injection<br>
+																	<strong>원인</strong> : 부족한 입력값 검증과 특수문자를 일반 문자로 해석하여 쿼리가 실행될 때 발생함.<br> 
+																	<strong>예상 피해</strong> : 중요 정보 노출 및 데이터를 조작하며, 계정을 공격할 수 있다. <br> 
+																	<strong>대응 방법</strong> : 입력 값을 검증하고 이스케이프 처리를 하며, 최소 권한 원칙을 적용한다.
+																</h6>
+															</div>
+														</div>
+													</div></td>
+											</tr>
+											<!-- 12번째 컬럼 -->
+											<tr>
+												<td><strong>Information Leakage<br>(정보 누출)</strong></td>
+												<td>X</td>
+												<td class="medium">Medium</td>
+												<td class="payload"></td>
+												<td><div class="card shadow mb-12">
+														<!-- 카드 헤더 -->
+														<a href="#collapseCardExample15"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample15">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-200, CWE-209</h6>
+														</a>
+														<!-- 카드 컨텐츠 내용 -->
+														<div class="collapse text-left" id="collapseCardExample15" style="">
+															<div class="card-body">
+																<h6>
+																	2021 A5. Security Misconfiguration<br>
+																	<strong>원인</strong> : 에러 처리가 적절하게 구현되지 않아 예외 처리 정보가 에러 메시지에 포함되는 경우에 발생함.<br> 
+																	<strong>예상 피해</strong> : 에러 메시지에서 얻은 시스템 정보를 이용하여 다양한 공격을 시도할 수 있음.<br> 
+																	<strong>대응 방법</strong> : 에러 메시지를 최소한으로 제공하도록 설정합니다. 디폴트 설정에서 상세한 정보가 노출되지 않도록 함.
+																</h6>
+															</div>
+														</div>
+													</div></td>
+											</tr>
+											<!-- 13번째 컬럼 -->
+											<tr>
+												<td><strong>Plain Text Transmission<br>(데이터 평문전송)</strong></td>
+												<td>X</td>
+												<td class="high">High</td>
+												<td class="payload"></td>
+
+												<td><div class="card shadow mb-12">
+														<!-- 카드 헤더 -->
+														<a href="#collapseCardExample16"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample16">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-311</h6>
+														</a>
+														<!-- 카드 컨텐츠 내용 -->
+														<div class="collapse text-left" id="collapseCardExample16"
+															style="">
+															<div class="card-body">
+																<h6>
+																	2017 A3. Sensitive Data Exposure<br>
+																	<strong>원인</strong> : 데이터를 전송하는 과정에서 암호화를 사용하지 않거나, 약한 암호화 알고리즘을 사용할 때 발생함.<br> 
+																	<strong>예상 피해</strong> : 공격자가 중요 정보를 가로채서, 금융 정보 혹은 개인 정보를 악용함.<br> 
+																	<strong>대응 방법</strong> : 데이터 전송 시 암호화(SSL/TLS)를 사용 하거나, 강력한 암호화 알고리즘을 사용하며 보안 표준을 준수한다. 
+																</h6>
+															</div>
+														</div>
+													</div></td>
+											</tr>
+											<!-- 14번째 컬럼 -->
+											<tr>
+												<td><strong>Open Redirect<br>(오픈 리다이렉트)</strong></td>
+												<td>X</td>
+												<td class="medium">Medium</td>
+												<td class="payload"></td>
+
+												<td><div class="card shadow mb-12">
+														<!-- 카드 헤더 -->
+														<a href="#collapseCardExample16"
+															class="d-block card-header py-12 collapsed"
+															data-toggle="collapse" role="button"
+															aria-expanded="false"
+															aria-controls="collapseCardExample16">
+															<h6 class="m-0 font-weight-bold text-primary">CWE-601</h6>
+														</a>
+														<!-- 카드 컨텐츠 내용 -->
+														<div class="collapse text-left" id="collapseCardExample16"
+															style="">
+															<div class="card-body">
+																<h6>
+																	2021 A1. Broken Access Control<br>
+																	<strong>원인</strong> : 웹 애플리케이션에서 사용자 입력을 검증하지 않고, 리다이렉션 URL을 사용할 때 발생함.<br> 
+																	<strong>예상 피해</strong> : 공격자가 피해자를 다른 악의적인 사이트로 리다이렉션 시켜서, 사기성 웹 페이지로 유인되어 악의적인 행위를 함.<br> 
+																	<strong>대응 방법</strong> : 입력값을 검증하고, 화이트 리스트 방식의 접근 제어를 구현한다. 
+																</h6>
+															</div>
+														</div>
+													</div></td>
+											</tr>  
+											
+											
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- /.container-fluid -->
+
+		</div>
+		<!-- End of Main Content -->
+
+
+
+	</div>
+	<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+
+	<!-- 최상위로 스크롤 올려주는 버튼-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- Logout Modal-->
+	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+					<button class="close" type="button" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">Select "Logout" below if you are ready
+					to end your current session.</div>
+				<div class="modal-footer">
+					<button class="btn btn-secondary" type="button"
+						data-dismiss="modal">Cancel</button>
+					<a class="btn btn-primary" href="login.html">Logout</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="js/sb-admin-2.min.js"></script>
+
+	<!-- Page level plugins -->
+	<script src="vendor/chart.js/Chart.min.js"></script>
+	<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+	<!-- Page level custom scripts -->
+	<script src="js/demo/chart-area-demo.js"></script>
+	<script src="js/demo/chart-pie-demo.js"></script>
+	<script src="js/demo/datatables-demo.js"></script>
+
+	<!-- 도넛 차트 스크립트 -->
+	<script>
+		$(window).ready(function() {
+			var score = parseInt(getParameterByName('score')) || 0;
+            score = Math.round(parseInt(document.querySelector('.sum1').innerText.split('/')[0])/parseInt(document.querySelector('.sum1').innerText.split('/')[1])*100);
+			$('.pie-chart1 .center').text(score + '%');
+
+            if(parseInt(score)<10){
+                var color="#3D81F5";
+            } else if(parseInt(score)<30){
+                var color="#12BA69";
+            } else if(parseInt(score)<50){
+                var color="#FCC436";
+            } else{
+                var color="#DD493C";
+            }
+
+			draw(score, '.pie-chart1', color);
+		});
+
+		function draw(max, classname, colorname) {
+			var i = 1;
+			var func1 = setInterval(function() {
+				if (i <= max) {
+					color1(i, classname, colorname);
+					i++;
+				} else {
+					clearInterval(func1);
+				}
+			}, 10);
+		}
+
+		function color1(i, classname, colorname) {
+			var gradientColor = (i == 0) ? "#e9ecef" : colorname + " 0% " + i
+					+ "%, #e9ecef " + i + "% 100%";
+			$(classname).css({
+				"background" : "conic-gradient(" + gradientColor + ")"
+			});
+		}
+
+		function getParameterByName(name) {
+			var url = window.location.href;
+			name = name.replace(/[\[\]]/g, '\\$&');
+			var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'), results = regex
+					.exec(url);
+			if (!results)
+				return null;
+			if (!results[2])
+				return '';
+			return decodeURIComponent(results[2].replace(/\+/g, ' '));
+		}
+	</script>
+	<!-- 리포트 저장 -->
+	<script>
+		document.getElementById("download-btn").addEventListener("click",
+				function() {
+					html2canvas(document.body).then(function(canvas) {
+						var link = document.createElement("a");
+						document.body.appendChild(link);
+						link.download = "report.png";
+						link.href = canvas.toDataURL("image/png");
+						link.target = '_blank';
+						link.click();
+					});
+				});
+	</script>
+
+
+	<!--푸터 -->
+	<footer class="sticky-footer bg-white">
+		<div class="container my-auto">
+			<div class="copyright text-center my-auto">
+				<span>Copyright &copy; Anti Fishing Scanner 2023</span>
+			</div>
+		</div>
+	</footer>
+	<!-- 푸터 끝 -->
+</body>
+
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,300,400,500,700,900" rel="stylesheet">
+    <%@page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+    <title>Anti Fishing Scanner</title>
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
+    <link rel="stylesheet" href="assets/css/templatemo-softy-pinko.css">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!--파비콘-->
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+    <!-- 버튼 -->
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+	<link href="css/style.css" rel="stylesheet" />
+
+    <!--파비콘-->
+	<link rel="icon" href="./favicon.ico" type="image/x-icon">
+	<!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <style>
+        .bg-light2{
+            background-color: #f4f9ffbd !important;
+        }
+    </style>
+    
+</head>
+
+
+<body id="page-top">
+    <!-- Navigation -->
+    <div id="navInclude"></div>
+
+    <!-- 메인  -->
+    <header style="background-image: url('img/geometric.jpg'); background-position: center; background-size: cover;">
+        <div class="container px-4 text-center">
+            <h1 class="fw-bolder" style="color: white;">취약점의 종류</h1><br>
+            <p class="fw-bolder" style="color: white;">우리 사이트에서 검사할 수 있는 취약점의 종류와 그에 대한 설명을 정리한 페이지입니다.</p>      
+        </div>
+    </header>
+
+    <!-- 1번째 섹션-->
+    <section id="about">
+        <div class="container px-4">
+            <div class="row gx-4 justify-content-center">
+                <div class="col-lg-12">
+                    <h2>XSS <a style="font-size: 24px;">(Cross-Site Scripting)</a></h2>
+                    <p class="lead2">
+                        기초적인 취약점 공격 중 하나로 공격자가 웹사이트에 스크립트를 심어 공격하는 기법을 말한다.<br>
+                        공격에 성공하면 사이트게 접속한 사용자는 삽입된 코드를 실행하게 되며 의도치 않은 행동을 수행하거나 쿠키나 세션토큰 등의 민감한 정보가 공격자에게 넘어간다.<br>
+                        이름에 걸맞게 자바스크립트를 사용해 공격하는 경우가 많다. (CSRF와 혼동할 수 있으나 이 점이 차이점이다.)<br><br>
+                        <h5 style="color: #FF4800;">OWASP에서 발표한 XSS 공격 방지 7계명<br></h5>
+                        0. 허용된 위치가 아닌 곳에 신뢰할 수 없는 데이터가 들어가는것을 허용하지 않는다.<br>
+                        1. 신뢰할 수 없는 데이터는 검증을 하여라.<br>
+                        2. HTML 속성에 신뢰할 수 없는 데이터가 들어갈 수 없도록 하여라.<br>
+                        3. 자바스크립트에 신뢰할 수 없는 값이 들어갈 수 없도록 하여라.<br>
+                        4. CSS의 모든 신뢰할 수 없는 값에 대해서 검증하여라.<br>
+                        5. URL 파라미터에 신뢰할 수 없는 값이 있는지 검증하여라.<br>
+                        6. HTML 코드를 전체적으로 한번 더 검증하여라.<br>
+                    </p>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2번째 섹션-->
+    <section class="bg-light2" id="services">
+        <div class="container px-4">
+            <div class="row gx-4 justify-content-center">
+                <div class="col-lg-12">
+                    <h2>SQL Injection <a style="font-size: 24px;">(SQL 삽입, SQL 주입)</a></h2>
+                    <p class="lead2">
+                        코드 인젝션의 한 기법으로 클라이언트의 입력값을 조작해 서버의 데이터베이스를 공격하는 공격 방식이다.<br>
+                        공격의 쉬운 난이도에 비해 파괴력이 어마어마하지만 탐지는 쉬운 편이다. <br>
+                        OWASP에서도 수년 동안 보안 위협 1순위로 두었던 만큼 각별한 주의가 필요하다.<br>
+                        너무 잘 알려진 보안 공격인만큼 대부분의 서버는 SQL 인젝션에 대해 방어가 되어 있다.<br><br>
+                        <h5 style="color: #FF4800;">대응방안</h5><p style="color: #000069;"> : XSS와 상당 부분 겹치므로 OWASP에서 발표한 내용을 다시 참고한다.</p>
+                        <ul>
+                            <li>입력 값에 대한 검증을 한다.</li>
+                            <li>Prepared Statement 구문을 사용한다.</li>
+                            <li>Error Message에 문제점을 직접 노출하지 않는다.</li>
+                            <li>웹 방화벽을 사용한다.</li>
+                        </ul>
+                        기본적으로 유저에게 받은 값을 직접 SQL로 넘겨서는 안되고, DB에 유저 별로 접근 권한과 사용 가능한 명령어를 설정하면 최악의 경우 그나마 피해를 최소화 할 수 있다. <br>                        
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3번째 섹션-->
+    <section id="about">
+        <div class="container px-4">
+            <div class="row gx-4 justify-content-center">
+                <div class="col-lg-12">
+                    <h2>Administrator Page Exposure <a style="font-size: 24px;">(관리자 페이지 노출)</a></h2>
+                    <p class="lead2">
+                        웹 서버 관리자 페이지가 추측 가능한 형태로 구성되어 공격자가 접근할 수 있는 취약점이다.<br>
+                        관리자 페이지가 노출되면 개인정보를 포함한 기밀이 유출될 수 있고, 노출된 관리자 페이지에서 공격이 일어나 권한을 탈취 할 수 있는 위협이 생긴다.<br><br>
+                        <h5 style="color: #FF4800;">대응방안<br></h5>
+                        <ul>
+                            <li>관리자 페이지 주소를 추측이 쉬운 주소(admin.php 등등)로 사용하지 말고 어렵게 변경한다.&nbsp;(asojvbfj.php 등등)</li>
+                            <li>아래와 같이 관리자 페이지에 대한 접근 제어를 설정한다.<br>
+                                &lt;Directory "/var/www/html/admin"&gt;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;Order Deny, Allow<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;Deny from all<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;Allow from 192.168.10.10<br>
+                                &lt;/Directory&gt;<br></li>
+                        </ul>                        
+                    </p>                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4번째 섹션-->
+    <section class="bg-light2" id="services">
+        <div class="container px-4">
+            <div class="row gx-4 justify-content-center">
+                <div class="col-lg-12">
+                    <h2>Directory Traversal <a style="font-size: 24px;">(Path traversal, 디렉토리 접근 공격)</a></h2>
+                    <p class="lead2">
+                        공격자가 요청 메시지의 URL이나 파라미터를 변경,조작하여 정상적으로 허용하지 않은 기능을 실행하거나 공격자가 원하는 경로로 접근해 다른 사용자의 리소스에 접근할 수 있는 공격이다.<br>
+                        보통 File을 처리하는 과정에서 가장 많이 발생하며, 파일 이름 등을 사용자로 부터 받는 경우 사용자가 ../ 같은 구문을 통해 상위 디렉토리로 접근하거나 허용된 디렉토리의 범위를 벗어나 시스템 파일 등을 읽을 수 있다.<br><br>
+                        <h5 style="color: #FF4800;">대응방안</h5>
+                        <ul>
+                            <li>사용자 입력구간에서 ../ 와 같이 경로(path)를 바꿀 수 있는 특수문자 등에 대해 처리하지 않도록 검증해야 한다.</li>
+                            <li>파일 등의 접근의 경우 해당 프로세스가 이동할 수 있는 최대 디렉토리를 지정해준다. (이 방법은 파일이나 디렉토리 관련 traversal 공격에 대해서만 대응할 수 있다.)</li>
+                        </ul>                                             
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5번째 섹션-->
+    <section id="about">
+        <div class="container px-4">
+            <div class="row gx-4 justify-content-center">
+                <div class="col-lg-12">
+                    <h2>Unnecessary HTTP Methods <a style="font-size: 24px;">(불필요한 HTTP 메소드 취약점)</a></h2>
+                    <p class="lead2">
+                        원인 : 일반적으로 사용하는 GET, POST 메소드 이외의 불필요한 메소드가 활성화 되어 있을 때 발생한다.<br>
+                        예상 피해 : 공격자가 악성 파일을 업로드하거나, 중요 파일의 삭제가 가능해지는 등 웹 사이트를 변조할 가능성이 생긴다.<br><br>
+                        <h5 style="color: #FF4800;">대응 방안</h5> 필요한 HTTP 메소드만 허용하고, 적절한 인증 및 권한 부여 메커니즘을 통해 권한 없는 접근을 방지한다.<br>              
+                    </p>                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6번째 섹션-->
+    <section class="bg-light2" id="services">
+        <div class="container px-4">
+            <div class="row gx-4 justify-content-center">
+                <div class="col-lg-12">
+                    <h2>Remote Code Execution <a style="font-size: 24px;">(RCE, 원격 코드 실행)</a></h2>
+                    <p class="lead2">
+                        응용 프로그램이 적절한 입력 이스케이프 유효성 검사없이 쉘 명령을 실행할 때 발생한다.<br>
+                        <h5 style="color: #FF4800;">대응방안</h5>
+                        <ul>
+                            <li>CVE-2017-12611<br>
+                                취약점에 영향을 받지 않는 버전으로 업데이트 수행(apache struts) <br>
+                                읽기만 가능한 속성을 이용하여 value 값 초기화(getter 속성에 한하여) <br>
+                                freemarker 미사용<br>
+                            </li><br>
+                            <li>CVE-2017-9805<br>
+                                버전 업그레이드<br>
+                                사용하지 않는 REST 플러그인 삭제<br>
+                                XML 지원 삭제<br>
+                            </li><br>
+                            <li>
+                                CVE-2016-3081<br>
+                                업데이트 불가피할 경우 Dynamic Method Invocation 비활성화<br>
+                                Struts.xml 에서 “struts.enable.Dynamic Method Invocation” False<br>
+                            </li>
+                        </ul>                                             
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7번째 섹션-->
+    <section id="about">
+        <div class="container px-4">
+            <div class="row gx-4 justify-content-center">
+                <div class="col-lg-12">
+                    <h2>File Inclusion <a style="font-size: 24px;">(파일 삽입)</a></h2>
+                    <p class="lead2">
+                        파일 실행, 웹 브라우저를 통해 서버에 파일을 포함시키는 과정이다.<br>
+                        이 취약점은 인클루드할 페이지 경로가 적절히 필터링되지 않았고 디렉토리 변경 명령어들의 삽입을 허용했을 때 일어난다.<br>
+                        대부분의 LFI 취약점은 URL을 통해 이뤄지는데 이는 보통 개발자가 GET Method 사용을 선호하기 때문이다.<br><br>
+                        <h5 style="color: #FF4800;">대응방안<br></h5>
+                        <ul>
+                            <li>
+                                입력 값 치환 <br>../ 와 같은 문자가 전달됐을 경우 다른 문자로 치환해야 한다.
+                            </li><br>
+                            <li>
+                                문자필터링 PHP<br>str_replace(“.”,””, $path);<br>str_replace(“/”,””, $filename);
+                            </li><Br>
+                            <li>
+                                중요 디렉토리 필터링<br>
+                                /etc/passwd<br>
+                                /etc/shadow<br>
+                                /etc/group<br>
+                                /etc/security/group<br>
+                                /etc/security/passwd<br>
+                                /etc/security/user<br>
+                                /etc/security/environ<br>
+                                /etc/security/limits<br>
+                                /usr/lib/security/mkuser.default
+                            </li>
+                        </ul>                        
+                    </p>                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8번째 섹션-->
+    <section class="bg-light2" id="services">
+        <div class="container px-4">
+            <div class="row gx-4 justify-content-center">
+                <div class="col-lg-12">
+                    <h2>Insecure Communications <a style="font-size: 24px;">(안전하지 않은 통신)</a></h2>
+                    <p class="lead2">
+                        원인 : 인증서 검증을 하지 않고 SSL/TLS 연결을 사용, 평문 데이터를 HTTP 통신을 통해 전달한다.<br>
+                        예상 피해 : 중요 정보를 가로채거나 조작, 시스템 접근, 고객정보 탈취할 수 있다.<br><br>
+                        <h5 style="color: #FF4800;">대응방안</h5>
+                        <ul>
+                            <li>
+                                HTTPS 프로토콜 사용한다.
+                            </li>
+                            <li>
+                                SSL/TLS 연결의 안정성을 검증한다.
+                            </li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9번째 섹션-->
+    <section id="about">
+        <div class="container px-4">
+            <div class="row gx-4 justify-content-center">
+                <div class="col-lg-12">
+                    <h2>Insecure Cryptographic Storage <a style="font-size: 24px;">(안전하지 않은 암호화 스토리지)</a></h2>
+                    <p class="lead2">
+                        원인 : 암호화에 약한 키를 사용해 데이터를 보호하지 않는 경우에 발생한다.<br>
+                        예상 피해 : 중요한 정보인 비밀 번호 등을 탈취하거나 조작할 수 있다.<br><br>
+                        <h5 style="color: #FF4800;">대응방안<br></h5>
+                        <ul>
+                            <li>
+                                HTTPS 프로토콜 사용한다.
+                            </li>
+                            <li>
+                                중요정보는 해시함수를 사용한다.
+                            </li>
+                        </ul>                
+                    </p>                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10번째 섹션-->
+    <section class="bg-light2" id="services">
+        <div class="container px-4">
+            <div class="row gx-4 justify-content-center">
+                <div class="col-lg-12">
+                    <h2>Authentication Bypass <a style="font-size: 24px;">(인증 우회)</a></h2>
+                    <p class="lead2">
+                        원인 : 인증 절차를 우회하고, 인증된 사용자 처럼 시스템에 접근한다.<br>
+                        예상 피해 : 다른 계정을 빼앗아 중요 데이터를 탈취하거나 조작할 수 있다.<br><br>
+                        <h5 style="color: #FF4800;">대응방안</h5>
+                        <ul>
+                            <li>
+                                강력한 인증절차를 사용하고 입력값을 검증한다.
+                            </li>
+                            <li>
+                                주기적으로 보안 업데이트를 실행한다.
+                            </li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11번째 섹션-->
+    <section id="about">
+        <div class="container px-4">
+            <div class="row gx-4 justify-content-center">
+                <div class="col-lg-12">
+                    <h2>Command Injection <a style="font-size: 24px;">(명령어 삽입)</a></h2>
+                    <p class="lead2">
+                        원인 : 입력값 검증을 하지 않고, 허용되지 않은 파일 업로드에 의해 발생한다.<br>
+                        예상 피해 : 시스템 명령어를 통해 시스템을 제어하거나, 중요 데이터를 탈취<br><br>
+                        <h5 style="color: #FF4800;">대응방안<br></h5>
+                        <ul>
+                            <li>취약한 함수 (system(), exec() 등)을 사용하지 않고 개발하는 것이 제일 좋다.</li>
+                            <li>시스템 명령을 사용할 수 있는 함수를 사용해야 한다면 입력값을 검증할 수 있는 로직을 구현해 부적절한 입력값을 제한한다.</li>
+                            <li>최소 권한의 원칙을 적용해 각 시스템 계정마다 적절한 권한을 부여함으로써 공격에 당하더라도 피해가 최소화 될 수 있도록 한다.</li>
+                        </ul>                
+                    </p>                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12번째 섹션-->
+    <section class="bg-light2" id="services">
+        <div class="container px-4">
+            <div class="row gx-4 justify-content-center">
+                <div class="col-lg-12">
+                    <h2>SSRF <a style="font-size: 24px;">(서버 측 요청 변조)</a></h2>
+                    <p class="lead2">
+                        서버 측에서 위조된 HTTP 요청을 발생시켜 직접적인 접근이 제한된 서버 내부 자원에 접근하여 외부로 데이터 유출 및 오동작을 유발하는 공격을 SSRF(Server Side Request Forgery)라고 한다. <br>
+                        공격형태만 보면 위조된 HTTP 요청(Request Forgery)를 이용한 공격이기 때문에 CSRF(Cross Site Request Forgery)와 유사하다고 볼 수 있으나 공격자의 공격이 발현되는 지점이 서버 측(Server Side)인지 클라이언트 측(Client Side)인지의 여부에 따라서 공격 형태가 구분될 수 있다.<br>
+                        CSRF가 사용자의 웹 브라우저를 하이재킹하여 사용자로 하여금 악성 요청을 수행하게 만든다면, SSRF는 접근이 제한된 내부환경에 추가 공격(Post-Exploitation)이 가능하기 때문에 공격의 영향도가 높아질 수밖에 없다.<br>
+                        SSRF 취약점은 외부의 공격자와 통신이 직접적으로 연결되지 않는다고 해서 보안을 소홀히 하는 경우가 많아 이를 공격자가 악용하여 큰 피해를 입을 수 있다.<br>
+                        최근 웹 어플리케이션 개발환경이 클라우드 인프라 기반 MSA형태로 변화함에 따라 위협이 증가하여 그 동향에 대한 주시가 필요한 취약점이므로 보안 점검을 통해 서버에 SSRF 취약점이 존재하는지 점검하고 네트워크와 애플리케이션 단 모두 대응 방안을 수립할 것을 권고한다.<br>
+                        <br>
+                        예상 피해 : 취약점을 이용하여 내부 네트워크에 접근하여 중요한 정보를 탈취<br><br>
+                        <h5 style="color: #FF4800;">대응방안</h5>
+                        특정 프로토콜 및 ip를 필터링하고, 인증 및 권한 부여 시스템을 관리한다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer-->
+        <div id="footerInclude"></div>
+
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+    
+    <!--include 코드-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function() {
+        $("#navInclude").load("navbar.html");
+        $("#footerInclude").load("footer.html");
+        });
+    </script>
+
+	<!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

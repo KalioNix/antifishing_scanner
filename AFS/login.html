@@ -1,0 +1,276 @@
+<%@ page import="javax.servlet.http.HttpSession" %>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>AFS</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+    <%@page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
+
+    <link href="css/templatemo-pod-talk.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+
+
+    <script src="./web_croll/boan.js" defer></script>
+    <script src="./web_croll/ahnlab.js" defer></script>
+	
+	<!--파비콘-->
+	<link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+
+<script src="jquery.js"></script> 
+
+
+
+<style>
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 화면 높이 전체를 커버하도록 설정 */
+  margin: 0;
+}
+.wrapper {
+  flex-grow: 1; /* 나머지 공간을 Center 섹션이 채우도록 설정 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  position: relative;
+  max-width: 470px;
+  width: 100%;
+  border-radius: 12px;
+  padding: 20px 30px 120px;
+  background: #4070f4;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.form.login {
+  position: absolute;
+  left: 50%;
+  bottom: -86%;
+  transform: translateX(-50%);
+  width: calc(100% + 220px);
+  padding: 20px 140px;
+  border-radius: 50%;
+  height: 100%;
+  background: #fff;
+  transition: all 0.6s ease;
+}
+
+.wrapper.active .form.login {
+  bottom: -15%;
+  border-radius: 35%;
+  box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form header {
+  font-size: 30px;
+  text-align: center;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form.login header {
+  color: #333;
+  opacity: 0.6;
+}
+
+.wrapper.active .form.login header {
+  opacity: 1;
+}
+
+.wrapper.active .signup header {
+  opacity: 0.6;
+}
+
+.wrapper form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+form input {
+  height: 60px;
+  outline: none;
+  border: none;
+  padding: 0 15px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.form.login input {
+  border: 1px solid #aaa;
+}
+
+.form.login input:focus {
+  box-shadow: 0 1px 0 #ddd;
+}
+
+form .checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox input[type="checkbox"] {
+  height: 16px;
+  width: 16px;
+  accent-color: #fff;
+  cursor: pointer;
+}
+
+form .checkbox label {
+  cursor: pointer;
+  color: #fff;
+}
+
+form a {
+  color: #333;
+  text-decoration: none;
+}
+
+form a:hover {
+  text-decoration: underline;
+}
+
+form input[type="submit"] {
+  margin-top: 15px;
+  padding: none;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.form.login input[type="submit"] {
+  background: #4070f4;
+  color: #fff;
+  border: none;
+}
+
+
+</style>
+
+</head>
+
+<body>
+<%
+HttpSession afs_session = request.getSession();
+String userEmail = (String) afs_session.getAttribute("userEmail");
+
+if (userEmail != null) {
+    // 사용자가 로그인한 경우
+    out.println("<script>alert('이미 로그인하셧습니다.');location.href='index.html';</script>");
+} 
+%>
+    <div id="navInclude"></div>
+
+    <center style="min-height: calc(100vh - 84px); flex-grow: 1; display: flex; align-items: center; justify-content: center; background-color: #d7deff;">
+        <section class="wrapper">
+        <div class="form signup">
+            <header>Signup</header>
+            <form action="register_process.jsp" method="post">
+            <input type="hidden" name="type" value="register"/>
+            <input type="text" placeholder="Full name" required name="username"/>
+            <input type="email" placeholder="Email address" required name="email"/>
+            <input type="password" placeholder="Password" required name="password"/>
+            <div class="checkbox">
+                <input type="checkbox" id="signupCheck" required />
+                <label for="signupCheck">I accept all terms & conditions</label>
+            </div>
+            <input type="submit" value="Signup" />
+            </form>
+        </div>
+
+        <div class="form login">
+            <header>Login</header>
+            <form action="login_process.jsp" method="post">
+            <input type="email" placeholder="Email address" required name="email"/>
+            <input type="password" placeholder="Password" required name="password"/>
+            <input type="submit" value="Login" />
+            </form>
+        </div>
+
+        <script>
+            const wrapper = document.querySelector(".wrapper"),
+            signupHeader = document.querySelector(".signup header"),
+            loginHeader = document.querySelector(".login header");
+            wrapper.classList.add("active");
+
+            loginHeader.addEventListener("click", () => {
+            wrapper.classList.add("active");
+            });
+            signupHeader.addEventListener("click", () => {
+            wrapper.classList.remove("active");
+            });
+        </script>
+        </section>
+    </center>
+
+  <div id="footerInclude"></div>
+
+  <!-- Back to Top -->
+  <a href="#" class="btn btn-lg btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+
+
+  <!-- JavaScript Libraries -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+  <script src="lib/easing/easing.min.js"></script>
+  <script src="lib/waypoints/waypoints.min.js"></script>
+  <script src="lib/counterup/counterup.min.js"></script>
+  <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+  <!-- Contact Javascript File -->
+  <script src="mail/jqBootstrapValidation.min.js"></script>
+  <script src="mail/contact.js"></script>
+
+  <!-- Template Javascript -->
+  <script src="js/main.js"></script>
+
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/custom.js"></script>
+<script>
+  $(function() {
+    $("#navInclude").load("navbar.html");
+    $("#footerInclude").load("footer.html");
+  });
+</script>
+
+</html>

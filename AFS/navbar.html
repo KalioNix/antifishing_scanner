@@ -1,0 +1,74 @@
+<%@ page import="javax.servlet.http.HttpSession" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Anti Fishing Scanner</title>
+<%@page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+
+
+<style>
+
+
+    
+</style>
+
+<link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+<!-- Navbar Start -->
+    <div class="container-fluid p-0">
+        <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-lg-5">
+            <a href="index.html" class="navbar-brand ml-lg-3">
+                <!-- <h1 class="m-0 display-5 text-uppercase text-primary"><i class="fa fa-truck mr-2"></i>AFS</h1> -->
+				<img src = "img/logo.png" width = "120px">
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
+                <div class="navbar-nav m-auto py-0">
+                	<a href="index.html" class="nav-item nav-link">Main</a>  
+			<a href="about.html" class="nav-item nav-link">About</a>					
+                	<a href="news.html" class="nav-item nav-link">News</a>
+			<a href="extend.html" class="nav-item nav-link">Extend</a>    
+			<a href="contact.html" class="nav-item nav-link">Contact</a>
+			
+			<div class="nav-item dropdown">
+                        	<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Guide</a>
+                        	<div class="dropdown-menu rounded-0 m-0">
+                            		<a href="guide1.html" class="dropdown-item">Main 사용법</a>
+                            		<a href="guide2.html" class="dropdown-item">취약점 종류</a>
+                            		<a href="guide3.html" class="dropdown-item">피싱 예방</a>
+                        	</div>
+                    	</div>
+			 
+
+                </div>
+                <%
+                    HttpSession afs_session = request.getSession();
+                    String userEmail = (String) afs_session.getAttribute("userEmail");
+                    if (userEmail != null) {
+                %>
+                <a href='mypage.html' class='btn py-2 px-4 d-none d-lg-block' style='background: #007bff; color: white; font-weight: bold; border-radius: 10px; margin-right: 10px;'>MY PAGE</a>
+                <a href='logout.jsp' class='btn py-2 px-4 d-none d-lg-block' style='background: #007bff; color: white; font-weight: bold; border-radius: 10px;'>LOGOUT</a>
+                <%
+                    } else {
+                %>
+                <a href='login.html' class='btn py-2 px-4 d-none d-lg-block' style='background: #007bff; color: white; font-weight: bold; border-radius: 10px;'>LOGIN</a>
+                <%
+                    }
+                %>
+
+
+
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+</body>
+</html>

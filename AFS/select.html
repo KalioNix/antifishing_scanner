@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<title>AFS Options</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="Free HTML Templates" name="keywords">
+<meta content="Free HTML Templates" name="description">
+
+<%@page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
+	
+   <!--파비콘-->
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link
+	href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+	rel="stylesheet">
+
+<!-- Font Awesome -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+	rel="stylesheet">
+
+<!-- Libraries Stylesheet -->
+<link href="lib/owlcarousel/assets/owl.carousel.min.css"
+	rel="stylesheet">
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="css/style.css" rel="stylesheet">
+
+<style>
+.wrapper {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -190px 0 0 -468px;
+	font-family: "Open Sans", sans-serif;
+	font-weight: 400;
+	color: #9f9f9f;
+	font-size: 15px;
+}
+
+.package {
+	box-sizing: border-box;
+	width: 350px;
+	border: 3px solid #e8e8e8;
+	border-radius: 10px;
+	display: inline-block;
+	padding: 30px;
+	text-align: center;
+	float: left;
+	transition: margin-top 0.5s linear;
+	position: relative;
+	margin : 15px
+}
+
+.package:hover {
+	margin-top: -20px;
+	transition: margin-top 0.3s linear;
+	border-color: #000069;
+	background-color : #fff;
+}
+
+.name {
+	color: #565656;
+	font-weight: 300;
+	font-size: 3rem;
+	margin-top: -5px;
+}
+
+.price {
+	margin-top: 7px;
+	font-weight: bold;
+}
+/* .price::after {
+  content: " / scan";
+  font-weight: normal;
+} */
+hr {
+	background-color: #dedede;
+	border: none;
+	height: 1px;
+}
+
+.trial {
+	font-size: 0.9rem;
+	font-weight: 600;
+	padding: 2px 21px 2px 21px;
+	color: #33c4b6;
+	border: 1px solid #e4e4e4;
+	display: inline-block;
+	border-radius: 15px;
+	background-color: white;
+	position: relative;
+	bottom: -32px;
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+	text-align: left;
+	margin-top: 29px;
+}
+
+li {
+	margin-bottom: 15px;
+}
+</style>
+
+
+<!--include 코드-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(function() {
+      $("#navInclude").load("navbar.html");
+      $("#footerInclude").load("footer.html");
+    });
+
+
+  </script>
+
+
+</head>
+
+<body>
+	<!-- ##################################################################### -->
+	<!-- ########################  오전 2:02 2023-10-01  ####################### -->
+	<!-- ###############################  LDW  ############################### -->
+	<!-- ##################################################################### -->
+
+
+	<div id="navInclude"></div> <!--navbar include-->
+
+	<!-- Pricing Plan Start -->
+	<div class="container-fluid pt-5 jumbotron2" style="margin-bottom : 0px;">
+		<div class="container">
+			<div class="card border-left-primary shadow h-100 py-2" style="margin: 30px; border-radius: 10px;">
+				<div class="card-body" style="padding: 0.5rem;">
+					<div class="row no-gutters align-items-center">
+						<div class="col mr-2">
+							<div
+								class="text-xs font-weight-bold text-primary text-uppercase mb-1"
+								style="text-align: center;">입력 URL</div>
+							<div class="h5 mb-0 font-weight-bold text-gray-800"
+								style="text-align: center;"><%=request.getParameter("inputValue")%></div>
+						</div>
+						<div class="col-auto"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row" style="margin-top: 50px;margin-bottom: 100px;">
+				<!-- 풀 스캔 -->
+				<div class="package fullscan">
+					<div class="name"><b>Full</b></div>
+					<div class="trial">test</div>
+					<hr>
+					<ul>
+						<li><input type="checkbox" id="checkbox1" name="checkbox1"
+							value="value1" checked disabled><strong><label
+								for="checkbox1">XSS</label></strong></li>
+						<li><input type="checkbox" id="checkbox2" name="checkbox2"
+							value="value2" checked disabled><strong><label
+								for="checkbox2">SQL Injection</label></strong></li>
+						<li><input type="checkbox" id="checkbox3" name="checkbox3"
+							value="value3" checked disabled><strong><label
+								for="checkbox3">Administrator Page Exposure</label></strong></li>
+						<li><input type="checkbox" id="checkbox4" name="checkbox4"
+							value="value4" checked disabled><strong><label
+								for="checkbox4">Directory Traversal</label></strong></li>
+						
+						<li><input type="checkbox" id="checkbox6" name="checkbox6"
+							value="value6" checked disabled><strong><label
+								for="checkbox6">Unnecessary HTTP Methods</label></strong></li>						
+						<li><input type="checkbox" id="checkbox8" name="checkbox8"
+							value="value8" checked disabled><strong><label
+								for="checkbox8">File Inclusion</label></strong></li>
+						<li><input type="checkbox" id="checkbox9" name="checkbox9"
+							value="value9" checked disabled><strong><label
+								for="checkbox9">Insecure Communications</label></strong></li>
+						<li><input type="checkbox" id="checkbox10" name="checkbox10"
+							value="value10" checked disabled><strong><label
+								for="checkbox10">Directory Listing</label></strong></li>
+						<li><input type="checkbox" id="checkbox11" name="checkbox11"
+							value="value11" checked disabled><strong><label
+								for="checkbox11">Buffer Overflow</label></strong></li>
+						<li><input type="checkbox" id="checkbox12" name="checkbox12"
+							value="value12" checked disabled><strong><label
+								for="checkbox12">Command Injection</label></strong></li>
+						<li><input type="checkbox" id="checkbox13" name="checkbox13"
+							value="value13" checked disabled><strong><label
+								for="checkbox13">LDAP Injection</label></strong></li>
+						<li><input type="checkbox" id="checkbox14" name="checkbox14"
+							value="value14" checked disabled><strong><label for="checkbox14">
+									Information Leakage</label></strong></li>
+						<li><input type="checkbox" id="checkbox15" name="checkbox15"
+							value="value15" checked disabled><strong><label for="checkbox15">
+									Plain Text Transmission</label></strong></li>
+						<li><input type="checkbox" id="checkbox16" name="checkbox16"
+							value="value16" checked disabled><strong><label for="checkbox16">
+									Open Redirect</label></strong></li>
+					</ul>
+					<div style="text-align: center; margin: 20px;">
+						<a href="javascript:submitForm('fullscan')" class="btn btn-primary py-2 px-4 my-2" >Start</a>
+					</div>
+				</div>
+
+				<!-- 퀵 스캔 -->
+				<div class="package quickscan">
+					<div class="name"><b>Quick</b></div>
+					<div class="trial">test</div>
+					<hr>
+					<ul>
+						<li><input type="checkbox" id="checkbox1" name="checkbox1"
+							value="value1" checked disabled><strong><label
+								for="checkbox1">XSS</label></strong></li>
+						<li><input type="checkbox" id="checkbox2" name="checkbox2"
+							value="value2" checked disabled><strong><label
+								for="checkbox2">SQL Injection</label></strong></li>
+						<li><input type="checkbox" id="checkbox3" name="checkbox3"
+							value="value3" disabled><strong><label
+								for="checkbox3">Administrator Page Exposure</label></strong></li>
+						<li><input type="checkbox" id="checkbox4" name="checkbox4"
+							value="value4" checked disabled><strong><label
+								for="checkbox4">Directory Traversal</label></strong></li>
+						
+						<li><input type="checkbox" id="checkbox6" name="checkbox6"
+							value="value6" disabled><strong><label
+								for="checkbox6">Unnecessary HTTP Methods</label></strong></li>
+						
+						<li><input type="checkbox" id="checkbox8" name="checkbox8"
+							value="value8" disabled><strong><label
+								for="checkbox8">File Inclusion</label></strong></li>
+						<li><input type="checkbox" id="checkbox9" name="checkbox9"
+							value="value9" disabled><strong><label
+								for="checkbox9">Insecure Communications</label></strong></li>
+						<li><input type="checkbox" id="checkbox10" name="checkbox10"
+							value="value10" disabled><strong><label
+								for="checkbox10">Directory Listing</label></strong></li>
+						<li><input type="checkbox" id="checkbox11" name="checkbox11"
+							value="value11" disabled><strong><label
+								for="checkbox11">Buffer Overflow</label></strong></li>
+						<li><input type="checkbox" id="checkbox12" name="checkbox12"
+							value="value12" checked disabled><strong><label
+								for="checkbox12">Command Injection</label></strong></li>
+						<li><input type="checkbox" id="checkbox13" name="checkbox13"
+							value="value13" disabled><strong><label
+								for="checkbox13">LDAP Injection</label></strong></li>
+						<li><input type="checkbox" id="checkbox14" name="checkbox14"
+							value="value14" disabled><strong><label for="checkbox14">
+									Information Leakage</label></strong></li>
+						<li><input type="checkbox" id="checkbox15" name="checkbox15"
+							value="value15" disabled><strong><label for="checkbox15">
+									Plain Text Transmission</label></strong></li>
+						<li><input type="checkbox" id="checkbox16" name="checkbox16"
+							value="value16" disabled><strong><label for="checkbox16">
+									Open Redirect</label></strong></li>
+					</ul>
+					<div style="text-align: center; margin: 20px;">
+						<a href="javascript:submitForm('quickscan')" class="btn btn-primary py-2 px-4 my-2">Start</a>
+					</div>
+				</div>
+				<!-- 커스텀 스캔 -->
+				<div class="package customscan">
+					<div class="name"><b>Custom</b></div>
+					<div class="trial">test</div>
+					<hr>
+					<ul>
+						<li><input type="checkbox" id="checkbox1" name="checkbox1"
+							value="value1"><strong><label for="checkbox1">XSS</label></strong></li>
+						<li><input type="checkbox" id="checkbox2" name="checkbox2"
+							value="value2"><strong><label for="checkbox2">SQL Injection</label></strong></li>
+						<li><input type="checkbox" id="checkbox3" name="checkbox3"
+							value="value3"><strong><label for="checkbox3">Administrator Page Exposure</label></strong></li>
+						<li><input type="checkbox" id="checkbox4" name="checkbox4"
+							value="value4"><strong><label for="checkbox4">Directory Traversal</label></strong></li>
+						
+						<li><input type="checkbox" id="checkbox6" name="checkbox6"
+							value="value6"><strong><label for="checkbox6">Unnecessary HTTP Methods</label></strong></li>
+						
+						<li><input type="checkbox" id="checkbox8" name="checkbox8"
+							value="value8"><strong><label for="checkbox8">File
+									Inclusion</label></strong></li>
+						<li><input type="checkbox" id="checkbox9" name="checkbox9"
+							value="value9"><strong><label for="checkbox9">Insecure
+									Communications</label></strong></li>
+						<li><input type="checkbox" id="checkbox10" name="checkbox10"
+							value="value10"><strong><label for="checkbox10">Directory Listing</label></strong></li>
+						<li><input type="checkbox" id="checkbox11" name="checkbox11"
+							value="value11"><strong><label for="checkbox11">Buffer Overflow</label></strong></li>
+						<li><input type="checkbox" id="checkbox12" name="checkbox12"
+							value="value12"><strong><label for="checkbox12">Command
+									Injection</label></strong></li>
+						<li><input type="checkbox" id="checkbox13" name="checkbox13"
+							value="value13"><strong><label for="checkbox13">
+									LDAP Injection</label></strong></li>
+						<li><input type="checkbox" id="checkbox14" name="checkbox14"
+							value="value14"><strong><label for="checkbox14">
+									Information Leakage</label></strong></li>
+						<li><input type="checkbox" id="checkbox15" name="checkbox15"
+							value="value15"><strong><label for="checkbox15">
+									Plain Text Transmission</label></strong></li>
+						<li><input type="checkbox" id="checkbox16" name="checkbox16"
+							value="value16"><strong><label for="checkbox16">
+									Open Redirect</label></strong></li>
+					</ul>
+					<div style="text-align: center; margin: 20px;">
+						<a href="javascript:submitForm('customscan')" class="btn btn-primary py-2 px-4 my-2">Start</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="footerInclude"></div> <!--footer include-->
+
+
+	<!-- Back to Top -->
+	<a href="#" class="btn btn-lg btn-primary back-to-top"><i
+		class="fa fa-angle-double-up"></i></a>
+
+
+	<!-- JavaScript Libraries -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+	<script src="lib/easing/easing.min.js"></script>
+	<script src="lib/waypoints/waypoints.min.js"></script>
+	<script src="lib/counterup/counterup.min.js"></script>
+	<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+	<!-- Contact Javascript File -->
+	<script src="mail/jqBootstrapValidation.min.js"></script>
+	<script src="mail/contact.js"></script>
+
+	<!-- Template Javascript -->
+	<script src="js/main.js"></script>
+
+	<script
+		src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script>
+
+            function getSelectedCheckboxIndexes(box) {
+                  var checkboxes = document.querySelectorAll("." +box+' input[type="checkbox"]');
+                    var selectedIndexes = [];
+
+                      for (var i = 0; i < checkboxes.length; i++) {
+                              if (checkboxes[i].checked) {
+                                        selectedIndexes.push(i);
+                                            }
+                                }
+
+                        let selected_idx = selectedIndexes.join("~");
+
+                          return selected_idx;
+            }
+
+ 			 function submitForm(box) {
+    			//const checkboxes = document.querySelectorAll('input[type=checkbox]:checked');
+    			//const values = Array.from(checkboxes).map(cb => cb.value);
+    			// values를 서버로 전달
+
+                 var url = document.querySelector('body > div.container-fluid.pt-5.jumbotron2 > div > div.card.border-left-primary.shadow.h-100.py-2 > div > div > div.col.mr-2 > div.h5.mb-0.font-weight-bold.text-gray-800').innerText;
+                 var idx = getSelectedCheckboxIndexes(box);
+                 //window.location.href = 'loading.html?show=result&file=vuln_scan&arg=' + encodeURIComponent(url + " " + idx);
+                 window.location.href = 'loading.html?show=result&file=vulnScan&arg=' + box+","+url + "," + idx;
+
+  			}
+		</script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<%@ page import="java.io.*" %>
+<%@ page import="java.util.*" %>
+<%@page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+
+<%
+//?filename=asdf&arguments=asdf
+
+String file = request.getParameter("file");
+String arg = request.getParameter("arg");
+String pyResult = "";
+
+if (file != null) {
+        String command = "python3 /var/www/AFS/python_files/" + file +".py";
+        if (arg != null && !arg.isEmpty()) {
+            command += " " + arg;
+        }
+                                    
+        Process process = Runtime.getRuntime().exec(command);
+        process.waitFor();
+                                                    
+        // Read the output from the process if needed
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String py_result;
+        StringBuilder output = new StringBuilder();
+        pyResult = reader.readLine();
+
+        reader.close();
+        out.println(pyResult);
+}
+%>

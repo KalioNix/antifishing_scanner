@@ -1,0 +1,399 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="java.util.Base64"%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Table V02</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<style>
+@font-face{
+    font-family:Poppins-Regular;
+    src:url(../fonts/poppins/Poppins-Regular.ttf)
+}
+@font-face{
+    font-family:Poppins-Bold;
+    src:url(../fonts/poppins/Poppins-Bold.ttf)
+}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box
+}
+body,html{
+    height:100%;
+    font-family:sans-serif
+}
+a{
+    margin:0;
+    transition:all .4s;
+    -webkit-transition:all .4s;
+    -o-transition:all .4s;
+    -moz-transition:all .4s
+}
+a:focus{
+    outline:none!important
+}
+a:hover{
+    text-decoration:none
+}
+h1,h2,h3,h4,h5,h6{
+    margin:0
+}
+p{
+    margin:0
+}
+ul,li{
+    margin:0;
+    list-style-type:none
+}
+input{
+    display:block;
+    outline:none;
+    border:none!important
+}
+textarea{
+    display:block;
+    outline:none
+}
+textarea:focus,input:focus{
+    border-color:transparent!important
+}
+button{
+    outline:none!important;
+    border:none;
+    background:0 0
+}
+button:hover{
+    cursor:pointer
+}
+iframe{
+    border:none!important
+}
+.limiter{
+    width:100%;
+    margin:0 auto
+}
+.container-table100{
+    width:100%;
+    min-height:100vh;
+    background:#c4d3f6;
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:-moz-box;
+    display:-ms-flexbox;
+    display:flex;
+
+    justify-content:center;
+    flex-wrap:wrap;
+    padding:33px 30px
+}
+.wrap-table100{
+    width:1160px;
+    border-radius:10px;
+    overflow:hidden
+}
+.table{
+    width:100%;
+    display:table;
+    margin:0
+}
+@media screen and (max-width:768px){
+    .table{
+        display:block
+    }
+}
+.row{
+    display:table-row;
+    background:#fff
+}
+.row.header{
+    color:#fff;
+    background:#6c7ae0
+}
+@media screen and (max-width:768px){
+    .row{
+        display:block
+    }
+    .row.header{
+        padding:0;
+        height:0
+    }
+    .row.header .cell{
+        display:none
+    }
+    .row .cell:before{
+        font-family:Poppins-Bold;
+        font-size:12px;
+        color:gray;
+        line-height:1.2;
+        text-transform:uppercase;
+        font-weight:unset!important;
+        margin-bottom:13px;
+        content:attr(data-title);
+        min-width:98px;
+        display:block
+    }
+}
+.cell{
+    display:table-cell
+}
+@media screen and (max-width:768px){
+    .cell{
+        display:block
+    }
+}
+.row .cell{
+    font-family:Poppins-Regular;
+    font-size:15px;
+    color:#666;
+    line-height:1.2;
+    font-weight:unset!important;
+    padding-top:20px;
+    padding-bottom:20px;
+    border-bottom:1px solid #f2f2f2
+}
+.row.header .cell{
+    font-family:Poppins-Regular;
+    font-size:18px;
+    color:#fff;
+    line-height:1.2;
+    font-weight:unset!important;
+    padding-top:19px;
+    padding-bottom:19px
+}
+.row .cell:nth-child(1){
+    width:60px;
+    padding-left:40px
+}
+.row .cell:nth-child(2){
+    width:160px
+}
+.row .cell:nth-child(3){
+    width:550px
+}
+.row .cell:nth-child(4){
+    width:190px
+}
+.row .cell:nth-child(5){
+    width:100px
+}
+.row .cell:nth-child(6){
+    width:100px
+}
+.table,.row{
+    width:100%!important
+}
+.row:not(:first-of-type):hover{
+    background-color: #afb3ff;
+}
+
+@media(max-width:768px){
+    .row{
+        border-bottom:1px solid #f2f2f2;
+        padding-bottom:18px;
+        padding-top:30px;
+        padding-right:15px;
+        margin:0
+    }
+    .row .cell{
+        border:none;
+        padding-left:30px;
+        padding-top:16px;
+        padding-bottom:16px
+    }
+    .row .cell:nth-child(1){
+        padding-left:30px
+    }
+    .row .cell{
+        font-family:Poppins-Regular;
+        font-size:18px;
+        color:#555;
+        line-height:1.2;
+        font-weight:unset!important
+    }
+    .table,.row,.cell{
+        width:100%!important
+    }
+}
+ 
+</style>
+<body>
+<div id="navInclude"></div>
+<center>
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table">
+                <div class="row header">
+                    <div class="cell">
+                    Num
+                    </div>
+                    <div class="cell">
+                    Date
+                    </div>
+                    <div class="cell">
+                    URL
+                    </div>
+                    <div class="cell">
+                    Type
+                    </div>
+                    <div class="cell">
+                    Load
+                    </div>
+                    <div class="cell">
+                    Delete
+                    </div>
+                </div>         
+                <%
+                    // 데이터베이스 연결 정보 설정
+                    String jdbcUrl = "jdbc:mysql://localhost:3306/afs_db?useUnicode=true&serverTimezone=Asia/Seoul";
+                    String dbUser = "afs";
+                    String dbPassword = "1q2w3e4r!";
+
+                    Connection connection = null;
+                    PreparedStatement preparedStatement = null;
+                    ResultSet resultSet = null;
+
+                    HttpSession afs_session = request.getSession();
+                    String userEmail = (String) afs_session.getAttribute("userEmail");
+
+                    if (userEmail != null) {
+                        try {
+                            // 데이터베이스 연결
+                            Class.forName("com.mysql.cj.jdbc.Driver");
+                            connection = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword);
+
+                            String getUserIdQuery = "SELECT user_id FROM users WHERE email = ?";
+                            PreparedStatement getUserIdStatement = connection.prepareStatement(getUserIdQuery);
+                            getUserIdStatement.setString(1, userEmail);
+
+                            ResultSet result = getUserIdStatement.executeQuery();
+                            int userId = 0; // 초기값 설정
+
+                            // 결과에서 user_id를 가져옴
+                            if (result.next()) {
+                                userId = result.getInt("user_id");
+                            }
+
+
+                            // SQL 쿼리 작성
+                            String sql = "SELECT * FROM reports where user_id = ?";
+                            preparedStatement = connection.prepareStatement(sql);
+                            preparedStatement.setInt(1,userId);
+
+                            resultSet = preparedStatement.executeQuery();
+
+                            // 결과 데이터를 테이블에 표시
+                            int j=1;
+
+                            while (resultSet.next()) {
+                                String report_id = resultSet.getString("report_id");
+                                String report_date = resultSet.getString("report_date");
+                                String base64String = resultSet.getString("report_text");
+                                byte[] decodedBytes = Base64.getDecoder().decode(base64String);
+                                String data = new String(decodedBytes, "UTF-8");
+
+                                // 문자열을 작은 따옴표(')를 기준으로 분할
+                                String[] parts = data.split("'");
+                                String url = "";
+                                String type = "";
+
+                                // 분할된 문자열 중에서 'url'과 'type'을 찾아 값을 추출
+                                for (int i = 0; i < parts.length; i++) {
+                                    if (parts[i].trim().equals("url")) {
+                                        url = parts[i + 2]; // 'url' 다음에 오는 값이 URL
+                                    }
+                                    if (parts[i].trim().equals("type")) {
+                                        type = parts[i + 2]; // 'type' 다음에 오는 값이 Type
+                                    }
+                                }
+                %>
+                <div class="row">
+                    <div class="cell" data-title="Num">
+                        <%= j %> 
+                    </div>
+                    <div class="cell" data-title="Date">
+                        <%= report_date %>
+                    </div>
+                    <div class="cell" data-title="URL">
+                        <%= url %>
+                    </div>
+                    <div class="cell" data-title="Type">
+                        <%= type %>
+                    </div>
+                    <div class="cell" data-title="Type" onclick="showData('<%= base64String %>')">
+                        ⭕
+                    </div>
+                    <div class="cell" data-title="Type" onclick="deleteData('<%= report_id %>', '<%= base64String %>')">
+                        ❌
+                    </div>
+                </div>
+                <%
+                        j++;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            // 연결 및 리소스 해제
+                            if (resultSet != null) resultSet.close();
+                            if (preparedStatement != null) preparedStatement.close();
+                            if (connection != null) connection.close();
+                        }
+                    } else{
+                        out.println("<script>alert('로그인이 필요합니다.');location.href='index.html';</script>");
+                    }
+                %>
+            </div>
+        </div>
+    </div>
+</center>   
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(function() {
+        $("#navInclude").load("navbar.html");
+    });
+</script>
+<script>
+    function showData(data) {
+        location.href="result.html?result="+encodeURIComponent(atob(data));
+    }
+
+    function deleteData(report_id, report_text){
+
+        var confirmation = confirm("삭제하시겠습니까?");
+
+        if (confirmation){
+            // AJAX 요청을 사용하여 서버에 데이터 전송
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "delete.jsp", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var response = xhr.responseText.trim();
+                        if (response == "success") {
+                            // 저장 성공 시 알림창 표시
+                            alert("데이터가 성공적으로 삭제 되었습니다.");
+                            location.href="mypage.html";
+                        } else {
+                            // 저장 실패 시 알림창 표시
+                            alert("데이터 삭제를 실패했습니다.");
+                        }
+                    } else {
+                        alert("요청 중 오류가 발생했습니다.");
+                    }
+                }
+            };
+
+            xhr.send("report_id=" + report_id + "&report_text=" + report_text);
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="kr">
+<head>
+<title>AFS</title>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<%@page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+
+<link href="https://fonts.googleapis.com/css?family=Raleway:100,300,400,500,700,900" rel="stylesheet">
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="contact_file/css/style.css">
+
+<!--파비콘-->
+<link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+<!-- 버튼 -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+<!--include 코드-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	$(function() {
+		$("#navInclude").load("navbar.html");
+		$("#footerInclude").load("footer.html");
+	});
+</script>
+
+</head>
+<body>
+	<!--navbar include-->
+	<div id="navInclude"></div>
+
+	<section class="ftco-section jumbotron2">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-12">
+					<div class="wrapper">
+						<div class="row no-gutters mb-5">
+							<div class="col-md-7">
+								<div class="contact-wrap w-100 p-md-5 p-4"
+									style="border-radius: 20px; border: 5px solid #2553b8; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);">
+									<h3 class="mb-4">
+										<strong>Contact Us</strong>
+									</h3>
+									<div id="form-message-warning" class="mb-4"></div>
+									<div id="form-message-success" class="mb-4">Your message
+										was sent, thank you!</div>
+									<form method="POST" id="contactForm" name="contactForm" class="contactForm" novalidate="novalidatei" accept-charset="EUC-KR" >
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label class="label" for="name">Name</label> <input
+														type="text" class="form-control" name="name" id="name"
+														placeholder="이름" id="name">
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label class="label" for="email">Email</label><input
+														type="email" class="form-control" name="email" id="email"
+														placeholder="이메일">
+												</div>
+											</div>
+											<div class="col-md-12">
+												<div class="form-group">
+													<label class="label" for="subject">Subject</label>
+													<select class="form-control" name="subject" id="subject">
+														<option value="general-inquiry">일반문의</option>
+														<option value="suggestions">건의사항</option>
+														<option value="phishing-report">피싱 사이트 신고</option>
+														<option value="false-positive-report">오탐신고</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<div class="form-group">
+													<label class="label" for="#">Message</label>
+													<textarea name="message" class="form-control" id="message"
+														cols="30" rows="5" placeholder="내용"></textarea>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<div class="form-group">
+													<input type="submit" value="Send Message" class="btn btn-primary" onclick="send_mail()">
+													<div class="submitting"></div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+
+							<div class="col-md-5 d-flex align-items-stretch"
+								style="padding-left: 20px;">
+								<div id="custom-map"
+									style="width: 100%; height: 100%; position: relative; border-radius: 20px; border: 5px solid #2553b8; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);">
+									<iframe
+										src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3162.6930135990087!2d126.9251874!3d37.5846465!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357c985b19c71155%3A0x94b833a089e6accb!2sMyeongji%20University!5e0!3m2!1sen!2s!4v1623736869487!5m2!1sen!2s"
+										width="100%" height="100%"
+										style="border: 0; border-radius: 18px;" allowfullscreen=""
+										loading="lazy"></iframe>
+								</div>
+							</div>
+
+
+						</div>
+						<div class="row">
+							<div class="col-md-3">
+								<div class="dbox w-100 text-center">
+									<div
+										class="icon d-flex align-items-center justify-content-center">
+										<span class="fa fa-map-marker"></span>
+									</div>
+									<div class="text">
+										<p>
+											<span><strong>주소 :</strong></span> 서울특별시 서대문구 가좌로 134
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="dbox w-100 text-center">
+									<div
+										class="icon d-flex align-items-center justify-content-center">
+										<span class="fa fa-phone"></span>
+									</div>
+									<div class="text">
+										<p>
+											<span><strong>Phone :</strong></span> <a href="tel://821020495872">+ 8210
+												2049 5872</a>
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="dbox w-100 text-center">
+									<div
+										class="icon d-flex align-items-center justify-content-center">
+										<span class="fa fa-paper-plane"></span>
+									</div>
+									<div class="text">
+										<p>
+											<span><strong>Email :</strong></span> <a href="mailto:inbo_afs@naver.com">inbo_afs@naver.com</a>
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="dbox w-100 text-center">
+									<div
+										class="icon d-flex align-items-center justify-content-center">
+										<span class="fa fa-globe"></span>
+									</div>
+									<div class="text">
+										<p>
+											<span><strong>Website :</strong></span> <a href="http://118.67.131.9">AFS</a>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!--footer include-->
+	<div id="footerInclude"></div>
+
+	<script>
+		function send_mail(){
+			var name = document.querySelector('#name').value;
+			var email = document.querySelector('#email').value;
+			var subject = document.querySelector('#subject').value;
+			var text = document.querySelector('#message').value;
+            document.contactForm.acceptCharset = "EUC-KR"
+			var message = name+"***"+email+"***"+subject+"***"+text;
+			var message = btoa(unescape(encodeURIComponent(message)));
+			console.log(message);
+
+			$.ajax({
+                type: "GET",
+                url: "py_exe.html?file=afs_mail" + "&arg="+message,
+                success: function(result) {
+					if(result.trim()=="success"){
+						alert("메일이 전송되었습니다.");
+						window.location.href = "index.html";
+					} else{
+						alert("메일 전송에 실패했습니다.");
+											}
+                },
+                error: function() {
+                    // 요청 실패 시 오류 메시지 출력
+                    alert("An error occurred while executing the command.");
+                }
+            });
+		}
+
+
+	</script>
+
+
+	<script src="contact_file/js/jquery.min.js"></script>
+	<script src="contact_file/js/popper.js"></script>
+	<script src="contact_file/js/bootstrap.min.js"></script>
+	<script src="contact_file/js/jquery.validate.min.js"></script>
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+	<script src="contact_file/js/google-map.js"></script>
+	<script src="contact_file/js/main.js"></script>
+
+</body>
+</html>
+
