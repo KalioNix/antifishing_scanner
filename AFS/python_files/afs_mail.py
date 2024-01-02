@@ -14,8 +14,8 @@ def mail_send(mail_item):
     split_text = base64_decode_string(mail_item).split('***')
           	
 	
-    SECRET_ID = "inbo_afs"
-    SECRET_PASS = "1q2w3e4r!"
+    SECRET_ID = "네이버아이디"
+    SECRET_PASS = "비밀번호!"
     
     try:
         smtp = smtplib.SMTP('smtp.naver.com',587)
