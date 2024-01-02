@@ -4,8 +4,8 @@ import json
 import socket
 import sys
 
-criminal_api_key = "UVUY39KrwS1bi4G3fAwzxWLQDeFEJ5Xy3POAiDlmigNWITMORV7kA06XT2xB"
-gonggong_data_key =  "SDtKAomEaycQLYC8%2BllD4XsPYPpmUtPMwGh08a759cSrFL7o%2By1rv5%2FzqU9TCjpKcmWcbkzeWcnaIF7c%2BE7CUA%3D%3D"
+criminal_api_key = "Criminal_IP_API_KEY"
+gonggong_data_key =  "인터넷진흥원_API_KEY"
 
 # 05.01 url에서 domain name만 가져오는 정규표현식 작성해야함
 base_url = "https://api.criminalip.io/v1/domain/reports?query="
